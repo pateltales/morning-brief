@@ -1,0 +1,28 @@
+name: Morning Brief
+
+on:
+  schedule:
+    - cron: '30 12 * * 1-5'   # 8:30 AM ET (EDT, UTC-4) — Mar–Nov
+    - cron: '30 13 * * 1-5'   # 8:30 AM ET (EST, UTC-5) — Nov–Mar
+  workflow_dispatch:            # manual trigger for testing
+
+jobs:
+  send-brief:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Morning Brief
+        env:
+          ALPHA_VANTAGE_KEY:   ${{ secrets.ALPHA_VANTAGE_KEY }}
+          FRED_API_KEY:        ${{ secrets.FRED_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python main.py
