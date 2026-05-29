@@ -24,6 +24,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Run tests
+        run: python -m pytest tests/ -v
+
       - name: Run Morning Brief
         env:
           ALPHA_VANTAGE_KEY:   ${{ secrets.ALPHA_VANTAGE_KEY }}
